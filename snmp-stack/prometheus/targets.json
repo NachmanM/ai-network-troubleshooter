@@ -1,0 +1,9 @@
+[
+  {
+    "targets": ["192.168.3.1"],
+    "labels": {
+      "model": "cisco_ios",
+      "location": "TelAviv"
+    }
+  }
+]
