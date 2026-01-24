@@ -2,8 +2,11 @@ scrape_configs:
   - job_name: 'snmp_dynamic'
     file_sd_configs:
       - files:
-        - 'targets.json'
+        - '/etc/prometheus/targets.json'
+        refresh_interval: 30s
     metrics_path: /snmp
+    params:
+      auth: [main_v3_auth]   
     relabel_configs:
       # Map the "model" label from JSON to the "module" parameter
       - source_labels: [model]

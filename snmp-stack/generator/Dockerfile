@@ -1,7 +1,7 @@
-FROM prom/snmp-generator:v0.30.1
+FROM prom/snmp-generator:v0.25.0
 
 # Install make and git (needed to fetch MIBs)
-RUN apt-get update && apt-get install -y git make curl
+RUN apt-get update && apt-get install -y git make curl gettext-base
 
 # Create the MIB directory
 WORKDIR /opt
@@ -15,9 +15,9 @@ RUN git clone https://github.com/librenms/librenms-mibs.git mibs
 ENV MIBDIRS /opt/mibs:/root/.snmp/mibs:/usr/share/snmp/mibs
 
 # Copy your local generator config into the image
-COPY generator.yml /opt/generator.yml
+COPY generator.yml /opt/generator.yml.tmpl
 
 # We override the entrypoint to perform substitution BEFORE generating.
 # It reads generator.yml.tmpl, fills in the secrets, saves it as generator.yml, 
 # and THEN runs the standard generate command.
-ENTRYPOINT ["/bin/bash", "-c", "envsubst < /opt/generator.yml.tmpl > /opt/generator.yml && generator generate --output-path=/output/snmp.yml"]
+ENTRYPOINT ["/bin/bash", "-c", "envsubst < /opt/generator.yml.tmpl > /opt/generator.yml && generator generate --no-fail-on-parse-errors -g ./generator.yml --output-path /output/nach/snmp.yml"]
