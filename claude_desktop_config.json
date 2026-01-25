@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "nornir-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://localhost:8000/mcp",
+        "--allow-http",
+        "--transport",
+        "http-only"
+      ]
+    },
+    "prometheus": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PROMETHEUS_URL",
+        "ghcr.io/pab1it0/prometheus-mcp-server:latest"
+      ],
+      "env": {
+        "PROMETHEUS_URL": "http://host.docker.internal:9190"
+      }
+    }
+	
+  }
+}
